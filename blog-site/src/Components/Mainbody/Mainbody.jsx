@@ -1,7 +1,30 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { CiImageOn, CiLink  } from "react-icons/ci";
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '../../Firebase/firebaseConfig'
 import { Link } from "react-router-dom";
+
 const Mainbody = () => {
+  const [poste, setPoste] = useState([])
+  useEffect(() => {
+    getPost()
+  }, [])
+
+  //this function is to add data
+  //collection is used to reference the database
+  const getPost = () => {
+    const postRef = collection(db, 'blog')
+    //getDocs is used to get items 
+    getDocs(postRef).then(response => {
+      const post = response.docs.map(doc => ({data: doc.data(), id: doc.id}))
+      setPoste(post)
+    }).catch(error => console.log(error.message))
+  }
+  //get the post from the poste
+  useEffect (() => {
+    console.log(poste)
+  },[poste])
+
   return (
     <div className=" h-[100vh] bg-zinc-200 ">
       <div className="grid justify-items-center  ">
