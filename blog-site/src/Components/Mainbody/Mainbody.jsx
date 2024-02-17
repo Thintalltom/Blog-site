@@ -26,12 +26,22 @@ const Mainbody = () => {
   },[poste])
 
   return (
-    <div className=" h-[100vh] bg-zinc-200 ">
+    <div>
       <div className="grid justify-items-center  ">
         <div className="border-[0.5px] border-slate-500 justify-center flex gap-[20px]  h-[3rem] p-[5px] items-center w-[40rem] mt-[20px] bg-white">
            <Link to='/create'><input type="text" className="bg-zinc-200 w-[30rem] p-[5px] rounded focus:outline-none " placeholder="Create Post" /> </Link> 
             <CiImageOn className="text-2xl cursor-pointer" />
             <CiLink className="text-2xl cursor-pointer" /> 
+        </div>
+
+        <div className="grid grid-cols-3 gap-[10rem]">
+          {poste.map((post, index) => (
+            <div key={index} className=" p-4 mt-[20px] rounded">
+              <img src={post.data.img} className="w-[200px] mx-auto rounded h-[100px]" />
+              <p className="font-extrabold">{post.data.title}</p>
+              <p className="font-extralight">{post.data.post}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
