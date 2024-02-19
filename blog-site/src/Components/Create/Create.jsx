@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { db, storage } from "../../Firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import {
@@ -8,6 +8,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { v4 } from "uuid";
+import { userContext } from "../Context/Context";
+import { useNavigate } from "react-router-dom";
 //this is the component that deals with creating of personal post
 const Create = () => {
   //create a state to handle the input
@@ -15,7 +17,7 @@ const Create = () => {
   const [post, setPost] = useState("");
   const [img, setImg] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-
+  const navigate = useNavigate()
   //handling the upload of image
   const uploadImage = (e) => {
     const imageFile = e.target.files[0];
@@ -75,8 +77,24 @@ const Create = () => {
     setPost("");
     setTitle("");
   };
+
+  const {logOut} = useContext(userContext);
+  const handleSignout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="bg-zinc-200 h-[100vh] p-4">
+      <button
+        className="p-4 bg-slate-500 text-white  rounded "
+        onClick={handleSignout}
+      >
+        Logout{" "}
+      </button>
       <div>
         <p className="text-center">Create your own personal post</p>
 

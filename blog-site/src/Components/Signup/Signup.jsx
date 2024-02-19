@@ -1,12 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { userContext } from "../Context/Context";
+import { Link } from "react-router-dom";
 const Signup = () => {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState(null);
+  const [signUpError, setSignUpError] = useState(null);
   const [info, setInfo] = useState({});
   const [email, setEmail] = useState("");
   const [show, setShow] = useState(false);
@@ -17,23 +18,20 @@ const Signup = () => {
   const showFunction = (e) => {
     setShow(!show);
   };
-  const uploadImage = (e) => {
-    const imageFile = e.target.files[0];
-    setImage(imageFile);
-  };
+  
 
-  const nameFunc = (e) => {
-    setName(e.target.value);
-  };
-  const userFunc = (e) => {
-    setUserName(e.target.value);
-    if (userName.length >= 4) {
-      setUsernameError("");
-    } else {
+ // const nameFunc = (e) => {
+   // setName(e.target.value);
+ // };
+  //const userFunc = (e) => {
+   // setUserName(e.target.value);
+    //if (userName.length >= 4) {
+   //   setUsernameError("");
+   // } else {
       // You can display an error message or handle the case in a way suitable for your application
-      setUsernameError("username should not be less than 4 characters");
-    }
-  };
+   //   setUsernameError("username should not be less than 4 characters");
+  //  }
+ // };
   const passwordFunc = (e) => {
     setPassword(e.target.value);
   };
@@ -51,15 +49,13 @@ const Signup = () => {
         navigate('/login')
         setInfo({
             email: email,
-            password: password,
-            username: userName,
-            name: name,
-            image: image,
+            password: password
           });
         console.log(info);
       })
       .catch((err) => {
         console.log(err);
+        setSignUpError(err.message)
       }).finally(() => {
         setLoading(false); // Set loading back to false regardless of success or failure
       });
@@ -70,31 +66,9 @@ const Signup = () => {
       <p className="text-center">FILL IN YOUR DETAILS</p>
       <div className="flex justify-center mt-4">
         <div className="leading-[50px]">
-          <label>Full Name</label> <br />
-          <input
-            type="text"
-            onChange={nameFunc}
-            value={name}
-            className="border-[0.5px] border-slate-500 rounded w-[500px]"
-          />{" "}
-          <br />
-          <label>Profile Picture</label> <br />
-          <input
-            type="file"
-            onChange={(e) => {
-              uploadImage(e);
-            }}
-          />{" "}
-          <br />
-          <label>UserName</label> <br />
-          <p className="text-red-500">{userNameError}</p>
-          <input
-            type="text"
-            onChange={userFunc}
-            value={userName}
-            className="border-[0.5px] border-slate-500 rounded w-[500px]"
-          />{" "}
-          <br />
+        {signUpError && ( // Render the error message if loginError state is not empty
+            <p className="text-red-500 text-center">{signUpError}</p>
+          )}
           <label>Email</label> <br />
           <input
             type="email"
@@ -125,6 +99,7 @@ const Signup = () => {
               {loading ? "Loading..." : "Sign Up"} {/* Button text */}
             </button>
           </div>
+          <p className="text-center text-sm mt-[10px]">Existing user? <Link to='/login' className="text-blue-500">Login</Link></p>
         </div>
       </div>
     </div>
