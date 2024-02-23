@@ -15,9 +15,15 @@ const Create = () => {
   //create a state to handle the input
   const [title, setTitle] = useState("");
   const [post, setPost] = useState("");
+  const [selectedOption, setSelectedOption] = useState('');
+
+  // Event handler to update the selected option
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
   const [img, setImg] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   //handling the upload of image
   const uploadImage = (e) => {
     const imageFile = e.target.files[0];
@@ -66,7 +72,7 @@ const Create = () => {
     }
     const postRef = collection(db, "blog");
     //add the title, post and the image url to the database
-    addDoc(postRef, { title, post, img })
+    addDoc(postRef, { title, post, img, selectedOption })
       .then((response) => {
         console.log(response.id);
       })
@@ -78,33 +84,26 @@ const Create = () => {
     setTitle("");
   };
 
-  const {logOut} = useContext(userContext);
-  const handleSignout = async () => {
-    try {
-      await logOut();
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div className="bg-zinc-200 h-[100vh] p-4">
-      <button
-        className="p-4 bg-slate-500 text-white  rounded "
-        onClick={handleSignout}
-      >
-        Logout{" "}
-      </button>
       <div>
         <p className="text-center">Create your own personal post</p>
 
         <div className=" flex flex-col justify-center items-center p-4">
-          <div className="bg-zinc-100 p-4 h-[25rem]">
+          <div className="bg-zinc-100 p-4 h-[30rem]">
+            <p>Select a genre:</p>
+            <select value={selectedOption} onChange={handleSelectChange}>
+              <option value="">Genres</option>
+              <option value="option1">Music</option>
+              <option value="option2">Lifestyle</option>
+              <option value="option3">Fashion</option>
+            </select>{" "}
+            <br />
             <input
               onChange={titleFunc}
               value={title}
               type="text"
-              className="w-[500px] border-[0.5px] border-slate-600 rounded p-[5px]"
+              className="w-[500px] mt-[10px] border-[0.5px] border-slate-600 rounded p-[5px]"
               placeholder="Name of post"
             />{" "}
             <br />

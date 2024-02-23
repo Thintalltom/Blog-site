@@ -8,7 +8,7 @@ import {signInWithEmailAndPassword,
 export const userContext = createContext();
 
 export const UserProvider = (props) => {
-const[user, setUser] = useState({})
+const[user, setUser] = useState(null)
 
 
 function signUp(email, password) {

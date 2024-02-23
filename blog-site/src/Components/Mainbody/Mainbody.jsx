@@ -9,6 +9,7 @@ const Mainbody = () => {
   useEffect(() => {
     getPost()
   }, [])
+  const [loading, setLoading] = useState(true); // Initialize loading state to true
 
   //this function is to add data
   //collection is used to reference the database
@@ -18,7 +19,8 @@ const Mainbody = () => {
     getDocs(postRef).then(response => {
       const post = response.docs.map(doc => ({data: doc.data(), id: doc.id}))
       setPoste(post)
-    }).catch(error => console.log(error.message))
+      setLoading(false);
+    }).catch(error =>{ console.log(error.message);  setLoading(false);})
   }
   //get the post from the poste
   useEffect (() => {
@@ -34,15 +36,19 @@ const Mainbody = () => {
             <CiLink className="text-2xl cursor-pointer" /> 
         </div>
 
-        <div className="grid grid-cols-3 gap-[10rem]">
-          {poste.map((post, index) => (
-            <div key={index} className=" p-4 mt-[20px] rounded">
-              <img src={post.data.img} className="w-[200px] mx-auto rounded h-[100px]" />
-              <p className="font-extrabold">{post.data.title}</p>
-              <p className="font-extralight">{post.data.post}</p>
-            </div>
-          ))}
-        </div>
+        {loading ? ( // Show loading message or spinner while loading
+          <div className="flex justify-center items-center">Loading...</div>
+        ) : (
+          <div className="grid grid-cols-3 gap-[10rem]">
+            {poste.map((post, index) => (
+              <div key={index} className=" p-4 mt-[20px] rounded">
+                <img src={post.data.img} className="w-[200px] mx-auto rounded h-[100px]" alt="post-image" />
+                <p className="font-extrabold">{post.data.title}</p>
+                <p className="font-extralight">{post.data.post}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

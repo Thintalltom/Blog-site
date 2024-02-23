@@ -10,11 +10,11 @@ import { UserProvider } from './Components/Context/Context'
 import ProtectedRoute from './Components/ProtectedRoute'
 import { userContext } from './Components/Context/Context'
 function App() {
-  const { user } = useContext(userContext)
+ 
 
   return (
     <UserProvider>
-     {user ? <p>User is logged in</p> : <p>User is logged out</p>}
+   
       <Nabar />
       <Routes>
         <Route path='/' element={<Mainbody />} />
@@ -27,7 +27,7 @@ function App() {
         <Route path='/login' element={<Login />} />
       </Routes>
       
-      
+     
     </UserProvider>
   )
 }
